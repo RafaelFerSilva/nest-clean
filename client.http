@@ -1,0 +1,24 @@
+@baseUrl = http://localhost:3333
+
+# @name CreateAccount
+# This request creates a new account with the provided details
+
+POST {{baseUrl}}/accounts
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "password": "123456"
+}
+
+###
+
+# @name Authenticate
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+    "email": "user@example.com",
+    "password": "password123"
+}
