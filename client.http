@@ -1,5 +1,7 @@
 @baseUrl = http://localhost:3333
 
+@authToken = {{Authenticate.response.body.access_token}}
+
 # @name CreateAccount
 # This request creates a new account with the provided details
 
@@ -22,3 +24,10 @@ Content-Type: application/json
     "email": "silva2@silva.com",
     "password": "123456"
 }
+
+###
+
+# @name CreateQuestion
+POST {{baseUrl}}/questions
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
