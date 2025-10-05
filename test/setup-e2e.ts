@@ -25,13 +25,13 @@ beforeAll(async () => {
   const databaseUrl = generatedUniqueDatabaseURL(schemaId);
   process.env.DATABASE_URL = databaseUrl;
   execSync('pnpm prisma db push', { stdio: 'inherit' })
-  console.log(`Connecting to database at ${databaseUrl}`);
+  // console.log(`Connecting to database at ${databaseUrl}`);
 });
 
 afterAll(async () => {
   await prisma.$executeRawUnsafe(`DROP SCHEMA IF EXISTS "${schemaId}" CASCADE`)
   await prisma.$disconnect();
-  console.log('Database schema dropped and Prisma client disconnected: ', schemaId);
+  // console.log('Database schema dropped and Prisma client disconnected: ', schemaId);
 });
 
 export default prisma;
