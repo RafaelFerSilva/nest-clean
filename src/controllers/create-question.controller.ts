@@ -1,10 +1,10 @@
 import { Body, Controller, Post, Req, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import z from "zod";
-import { CurrentUser } from "src/auth/current-user-decorator";
-import type { UserPayload } from "src/auth/jwt.strategy";
-import { ZodValidationPipe } from "src/pipes/zod-validation-pipe";
-import { PrismaService } from "src/prisma/prisma.service";
+import { CurrentUser } from "@/auth/current-user-decorator";
+import type { UserPayload } from "@/auth/jwt.strategy";
+import { ZodValidationPipe } from "@/pipes/zod-validation-pipe";
+import { PrismaService } from "@/prisma/prisma.service";
 
 const createQuestionBodySchema = z.object({
   title: z.string().min(1, "Title is required"),
