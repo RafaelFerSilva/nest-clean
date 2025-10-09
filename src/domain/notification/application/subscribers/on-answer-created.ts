@@ -1,35 +1,37 @@
-import { DomainEvents } from '@/core/events/domain-events'
-import { EventHandler } from '@/core/events/event-handler'
-import { QuestionRepository } from '@/domain/forum/application/repositories/questions-repository'
-import { AnswerCreatedEvent } from '@/domain/forum/enterprise/events/answer-created-events'
-import { SendNotificationUseCase } from '../use-cases/send-notification'
+import { DomainEvents } from "@/core/events/domain-events";
+import { EventHandler } from "@/core/events/event-handler";
+import { QuestionsRepository } from "@/domain/forum/application/repositories/questions-repository";
+import { AnswerCreatedEvent } from "@/domain/forum/enterprise/events/answer-created-events";
+import { SendNotificationUseCase } from "../use-cases/send-notification";
 
 export class OnAnswerCreated implements EventHandler {
   constructor(
-    private questionRepository: QuestionRepository,
-    private sendNotification: SendNotificationUseCase,
+    private questionRepository: QuestionsRepository,
+    private sendNotification: SendNotificationUseCase
   ) {
-    this.setupSubscriptions()
+    this.setupSubscriptions();
   }
 
   setupSubscriptions(): void {
     DomainEvents.register(
       this.sendNewAnswerNotification.bind(this),
-      AnswerCreatedEvent.name,
-    )
+      AnswerCreatedEvent.name
+    );
   }
 
   private async sendNewAnswerNotification({ answer }: AnswerCreatedEvent) {
     const question = await this.questionRepository.findById(
-      answer.questionId.toString(),
-    )
+      answer.questionId.toString()
+    );
 
     if (question) {
       await this.sendNotification.execute({
         recipientId: question.authorId.toString(),
-        title: `New answer to your question: ${question.title.substring(0, 40).concat('...')}`,
+        title: `New answer to your question: ${question.title
+          .substring(0, 40)
+          .concat("...")}`,
         content: answer.excerpt,
-      })
+      });
     }
   }
 }
