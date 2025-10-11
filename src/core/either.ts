@@ -1,57 +1,47 @@
-export class Left<T, E> {
-  readonly value: T | E
+// Esse é um código que se copia e cola em todo projeto
+// Purify-Ts até traz isso pronto
 
-  constructor(value: T | E) {
-    this.value = value
+// Error
+export class Left<L, R> {
+  readonly value: L;
+
+  constructor(value: L) {
+    this.value = value;
   }
 
-  // public static of<T, E>(value: T | E): Left<T, E> {
-  //     return new Left(value);
-  // }
-
-  public isLeft(): this is Left<T, E> {
-    return true
+  isRight(): this is Right<L, R> {
+    return false;
   }
 
-  public isRight(): this is Right<T, E> {
-    return false
+  isLeft(): this is Left<L, R> {
+    return true;
   }
-
-  // public getValue(): T | E {
-  //     return this.value;
-  // }
 }
 
-export class Right<T, E> {
-  readonly value: T | E
+// Success
 
-  constructor(value: T | E) {
-    this.value = value
+export class Right<L, R> {
+  readonly value: R;
+
+  constructor(value: R) {
+    this.value = value;
   }
 
-  // public static of<T, E>(value: T | E): Right<T, E> {
-  //     return new Right(value);
-  // }
-
-  public isLeft(): this is Left<T, E> {
-    return false
+  isRight(): this is Right<L, R> {
+    return true;
   }
 
-  public isRight(): this is Right<T, E> {
-    return true
+  isLeft(): this is Left<L, R> {
+    return false;
   }
-
-  // public getValue(): T | E {
-  //     return this.value;
-  // }
 }
 
-export type Either<T, E> = Left<T, E> | Right<T, E>
+export type Either<L, R> = Left<L, R> | Right<L, R>;
 
-export const left = <T, E>(value: T): Either<T, E> => {
-  return new Left<T, E>(value)
-}
+export const left = <L, R>(value: L): Either<L, R> => {
+  return new Left(value);
+};
 
-export const right = <T, E>(value: E): Either<T, E> => {
-  return new Right<T, E>(value)
-}
+export const right = <L, R>(value: R): Either<L, R> => {
+  return new Right(value);
+};
