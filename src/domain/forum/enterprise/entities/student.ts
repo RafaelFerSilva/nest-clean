@@ -1,14 +1,13 @@
 import { Entity } from "@/core/entities/entity";
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
 
-interface StudentsProps {
+export interface StudentsProps {
   name: string;
   email: string;
   password: string;
 }
 
 export class Students extends Entity<StudentsProps> {
-
   get name() {
     return this.props.name;
   }

@@ -32,7 +32,7 @@ export class RegisterStudentUseCase {
       email
     );
 
-    if (!strudentWithSameEmail) {
+    if (strudentWithSameEmail) {
       return left(new StudentAlreadyExistsError(email));
     }
 
