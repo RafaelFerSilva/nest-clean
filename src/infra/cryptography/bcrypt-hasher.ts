@@ -1,4 +1,4 @@
-import { hash, compare } from "bcrypt";
+import { hash, compare } from "bcryptjs";
 import { HashCompare } from "@/domain/forum/application/cryptography/hash-compare";
 import { HashGenerator } from "@/domain/forum/application/cryptography/hash-generator";
 
