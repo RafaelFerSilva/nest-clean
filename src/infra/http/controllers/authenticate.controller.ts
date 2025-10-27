@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   HttpCode,
@@ -9,6 +10,8 @@ import {
 import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
 import { z } from "zod";
 import { AuthenticateStudentUseCase } from "@/domain/forum/application/use-cases/authenticate-student";
+import { WrongCreadentialsError } from "@/domain/forum/application/use-cases/errors/wrong-credentials-error";
+import { Public } from "@/infra/auth/public";
 
 const authenticateBodySchema = z.object({
   email: z.email("Invalid email format"),
@@ -18,6 +21,7 @@ const authenticateBodySchema = z.object({
 type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>;
 
 @Controller("/sessions")
+@Public()
 export class AuthenticateController {
   constructor(private authenticateStudent: AuthenticateStudentUseCase) {}
 
@@ -27,10 +31,19 @@ export class AuthenticateController {
   async handle(@Body() body: AuthenticateBodySchema) {
     const { email, password } = body;
     const result = await this.authenticateStudent.execute({ email, password });
+
     if (result.isLeft()) {
-      throw new UnauthorizedException(result.value.message);
+      const error = result.value;
+      switch (error.constructor) {
+        case WrongCreadentialsError:
+          throw new UnauthorizedException(error.message);
+        default:
+          throw new BadRequestException(error.message);
+      }
     }
+
     const { accessToken } = result.value;
+
     return {
       access_token: accessToken,
     };
